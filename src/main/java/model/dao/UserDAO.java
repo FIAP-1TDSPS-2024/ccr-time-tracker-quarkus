@@ -57,22 +57,25 @@ public class UserDAO {
     }
 
     public UserEntity create(UserEntity user) throws SQLException {
-        String sql = "INSERT INTO users (name, email, password) VALUES (?, ?, ?) RETURNING id";
+        String sql = "INSERT INTO users (name, email, password) VALUES (?, ?, ?)";
 
         try (Connection conn = databaseConfig.getConnection();
-                PreparedStatement stmt = conn.prepareStatement(sql)) {
+                PreparedStatement stmt = conn.prepareStatement(sql, new String[] { "id" })) {
 
             stmt.setString(1, user.getName());
             stmt.setString(2, user.getEmail());
             stmt.setString(3, user.getPassword());
 
-            try (ResultSet rs = stmt.executeQuery()) {
+            stmt.executeUpdate();
+
+            try (ResultSet rs = stmt.getGeneratedKeys()) {
                 if (rs.next()) {
-                    user.setId(rs.getLong("id"));
+                    user.setId(rs.getLong(1));
                 }
+
+                return user;
             }
         }
-        return user;
     }
 
     public boolean update(UserEntity user) throws SQLException {

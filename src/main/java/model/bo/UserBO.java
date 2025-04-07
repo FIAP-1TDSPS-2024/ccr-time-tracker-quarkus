@@ -20,7 +20,8 @@ public class UserBO {
     UserDAO userDAO;
 
     public List<UserResponseVO> getAllUsers() throws SQLException {
-        return userDAO.findAll().stream()
+        return userDAO.findAll()
+                .stream()
                 .map(UserResponseVO::new)
                 .collect(Collectors.toList());
     }
@@ -49,7 +50,8 @@ public class UserBO {
         }
 
         UserEntity entity = createVO.toEntity();
-        entity = userDAO.create(entity);
+        userDAO.create(entity);
+
         return new UserResponseVO(entity);
     }
 
