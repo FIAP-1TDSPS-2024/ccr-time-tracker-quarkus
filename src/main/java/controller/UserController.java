@@ -21,9 +21,9 @@ public class UserController {
 
     @Inject
     UserBO userBO;
+    ResponseEntity re = new ResponseEntity();
 
     public Response getAllUsers() {
-        ResponseEntity re = new ResponseEntity();
         try {
             List<UserResponseVO> users = userBO.getAllUsers();
             return re.OK(users);
@@ -37,7 +37,6 @@ public class UserController {
     }
 
     public Response getUserById(Long id) {
-        ResponseEntity re = new ResponseEntity();
         try {
             return userBO.getUserById(id)
                     .map(user -> re.OK(user))
@@ -52,7 +51,6 @@ public class UserController {
     }
 
     public Response createUser(UserCreateVO user) {
-        ResponseEntity re = new ResponseEntity();
         try {
             UserResponseVO created = userBO.createUser(user);
             return re.Created(created);
@@ -66,7 +64,6 @@ public class UserController {
     }
 
     public Response updateUser(Long id, UserUpdateVO user) {
-        ResponseEntity re = new ResponseEntity();
         try {
             return userBO.updateUser(id, user)
                     .map(updated -> re.OK(updated))
@@ -81,7 +78,6 @@ public class UserController {
     }
 
     public Response deleteUser(Long id) {
-        ResponseEntity re = new ResponseEntity();
         try {
             if (userBO.deleteUser(id)) {
                 return re.NoContent();
