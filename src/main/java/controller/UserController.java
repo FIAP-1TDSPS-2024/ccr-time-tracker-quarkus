@@ -6,6 +6,7 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import model.bo.UserBO;
+import model.entity.ResponseEntity;
 import model.vo.UserCreateVO;
 import model.vo.UserResponseVO;
 import model.vo.UserUpdateVO;
@@ -23,57 +24,76 @@ public class UserController {
     UserBO userBO;
 
     public Response getAllUsers() {
+        ResponseEntity re = new ResponseEntity();
         try {
             List<UserResponseVO> users = userBO.getAllUsers();
-            return Response.ok(users).build();
+            return re.OK(users);
         } catch (SQLException e) {
-            return Response.serverError().entity(e.getMessage()).build();
+            System.out.println("Error fetching users: " + e.getMessage());
+
+            return re.InternalServerError();
+        } catch (IllegalArgumentException e) {
+            return re.BadRequest(e.getMessage());
         }
     }
 
     public Response getUserById(Long id) {
+        ResponseEntity re = new ResponseEntity();
         try {
             return userBO.getUserById(id)
-                    .map(user -> Response.ok(user).build())
-                    .orElse(Response.status(Response.Status.NOT_FOUND).build());
+                    .map(user -> re.OK(user))
+                    .orElse(re.NotFound());
         } catch (SQLException e) {
-            return Response.serverError().entity(e.getMessage()).build();
+            System.out.println("Error fetching users: " + e.getMessage());
+
+            return re.InternalServerError();
+        } catch (IllegalArgumentException e) {
+            return re.BadRequest(e.getMessage());
         }
     }
 
     public Response createUser(UserCreateVO user) {
+        ResponseEntity re = new ResponseEntity();
         try {
             UserResponseVO created = userBO.createUser(user);
-            return Response.status(Response.Status.CREATED).entity(created).build();
-        } catch (IllegalArgumentException e) {
-            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+            return re.Created(created);
         } catch (SQLException e) {
-            return Response.serverError().entity(e.getMessage()).build();
+            System.out.println("Error fetching users: " + e.getMessage());
+
+            return re.InternalServerError();
+        } catch (IllegalArgumentException e) {
+            return re.BadRequest(e.getMessage());
         }
     }
 
     public Response updateUser(Long id, UserUpdateVO user) {
+        ResponseEntity re = new ResponseEntity();
         try {
             return userBO.updateUser(id, user)
-                    .map(updated -> Response.ok(updated).build())
-                    .orElse(Response.status(Response.Status.NOT_FOUND).build());
-        } catch (IllegalArgumentException e) {
-            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+                    .map(updated -> re.OK(updated))
+                    .orElse(re.NotFound());
         } catch (SQLException e) {
-            return Response.serverError().entity(e.getMessage()).build();
+            System.out.println("Error fetching users: " + e.getMessage());
+
+            return re.InternalServerError();
+        } catch (IllegalArgumentException e) {
+            return re.BadRequest(e.getMessage());
         }
     }
 
     public Response deleteUser(Long id) {
+        ResponseEntity re = new ResponseEntity();
         try {
             if (userBO.deleteUser(id)) {
-                return Response.noContent().build();
+                return re.NoContent();
             }
-            return Response.status(Response.Status.NOT_FOUND).build();
-        } catch (IllegalArgumentException e) {
-            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+            return re.NotFound();
         } catch (SQLException e) {
-            return Response.serverError().entity(e.getMessage()).build();
+            System.out.println("Error fetching users: " + e.getMessage());
+
+            return re.InternalServerError();
+        } catch (IllegalArgumentException e) {
+            return re.BadRequest(e.getMessage());
         }
     }
 }

@@ -43,10 +43,10 @@ public class UserBO {
             throw new IllegalArgumentException("Invalid email format");
         }
         if (createVO.getPassword() == null || createVO.getPassword().trim().isEmpty()) {
-            throw new IllegalArgumentException("Password cannot be empty");
+            throw new IllegalArgumentException("Invalid password");
         }
         if (createVO.getPassword().length() < 8) {
-            throw new IllegalArgumentException("Password must be at least 8 characters long");
+            throw new IllegalArgumentException("Invalid password");
         }
 
         UserEntity entity = createVO.toEntity();
@@ -68,7 +68,7 @@ public class UserBO {
         }
         if (updateVO.getPassword() != null && !updateVO.getPassword().trim().isEmpty()) {
             if (updateVO.getPassword().length() < 8) {
-                throw new IllegalArgumentException("Password must be at least 8 characters long");
+                throw new IllegalArgumentException("Invalid password");
             }
         }
 
