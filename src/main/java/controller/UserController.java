@@ -11,7 +11,6 @@ import model.vo.UserCreateVO;
 import model.vo.UserResponseVO;
 import model.vo.UserUpdateVO;
 
-import java.sql.SQLException;
 import java.util.List;
 
 @Path("/users")
@@ -28,12 +27,12 @@ public class UserController {
         try {
             List<UserResponseVO> users = userBO.getAllUsers();
             return re.OK(users);
-        } catch (SQLException e) {
+        } catch (IllegalArgumentException e) {
+            return re.BadRequest(e.getMessage());
+        } catch (Exception e) {
             System.out.println("Error fetching users: " + e.getMessage());
 
             return re.InternalServerError();
-        } catch (IllegalArgumentException e) {
-            return re.BadRequest(e.getMessage());
         }
     }
 
@@ -43,12 +42,12 @@ public class UserController {
             return userBO.getUserById(id)
                     .map(user -> re.OK(user))
                     .orElse(re.NotFound());
-        } catch (SQLException e) {
+        } catch (IllegalArgumentException e) {
+            return re.BadRequest(e.getMessage());
+        } catch (Exception e) {
             System.out.println("Error fetching users: " + e.getMessage());
 
             return re.InternalServerError();
-        } catch (IllegalArgumentException e) {
-            return re.BadRequest(e.getMessage());
         }
     }
 
@@ -57,12 +56,12 @@ public class UserController {
         try {
             UserResponseVO created = userBO.createUser(user);
             return re.Created(created);
-        } catch (SQLException e) {
-            System.out.println("Error fetching users: " + e.getMessage());
-
-            return re.InternalServerError();
         } catch (IllegalArgumentException e) {
             return re.BadRequest(e.getMessage());
+        } catch (Exception e) {
+            System.out.println("Error creating user: " + e.getMessage());
+
+            return re.InternalServerError();
         }
     }
 
@@ -72,12 +71,12 @@ public class UserController {
             return userBO.updateUser(id, user)
                     .map(updated -> re.OK(updated))
                     .orElse(re.NotFound());
-        } catch (SQLException e) {
-            System.out.println("Error fetching users: " + e.getMessage());
-
-            return re.InternalServerError();
         } catch (IllegalArgumentException e) {
             return re.BadRequest(e.getMessage());
+        } catch (Exception e) {
+            System.out.println("Error updating user: " + e.getMessage());
+
+            return re.InternalServerError();
         }
     }
 
@@ -88,12 +87,12 @@ public class UserController {
                 return re.NoContent();
             }
             return re.NotFound();
-        } catch (SQLException e) {
-            System.out.println("Error fetching users: " + e.getMessage());
-
-            return re.InternalServerError();
         } catch (IllegalArgumentException e) {
             return re.BadRequest(e.getMessage());
+        } catch (Exception e) {
+            System.out.println("Error deleting user: " + e.getMessage());
+
+            return re.InternalServerError();
         }
     }
 }
