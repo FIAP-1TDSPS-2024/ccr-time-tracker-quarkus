@@ -3,13 +3,8 @@ package model.bo;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import model.dao.FuncionarioDAO;
-import model.dao.UserDAO;
 import model.entity.FuncionarioEntity;
-import model.entity.UserEntity;
 import model.vo.FuncionarioVO;
-import model.vo.UserCreateVO;
-import model.vo.UserResponseVO;
-import model.vo.UserUpdateVO;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -54,7 +49,7 @@ public class FuncionarioBO {
         if (funcionario.getCargo() == null || funcionario.getCargo().trim().isEmpty()) {
             throw new IllegalArgumentException("Role cannot be empty");
         }
-        if (funcionario.getPermissao() == 0){
+        if (funcionario.getPermissao() == 0) {
             throw new IllegalArgumentException("Permission cannot be empty");
         }
         if (funcionario.getSenha() == null || funcionario.getSenha().trim().isEmpty()) {
@@ -74,5 +69,23 @@ public class FuncionarioBO {
             throw new IllegalArgumentException("User ID cannot be null");
         }
         return funcionarioDAO.delete(id);
+    }
+
+    public FuncionarioVO login(String email, String senha) throws SQLException {
+        if (email == null || email.trim().isEmpty()) {
+            throw new IllegalArgumentException("Invalid email or password");
+        }
+        if (senha == null || senha.trim().isEmpty()) {
+            throw new IllegalArgumentException("Invalid email or password");
+        }
+
+        Optional<FuncionarioEntity> funcionario = funcionarioDAO.findByEmail(email);
+
+        System.out.println("Funcionario: " + funcionario.toString());
+        if (!funcionario.isEmpty() && funcionario.get().getSenha().equals(senha)) {
+            return funcionario.map(FuncionarioVO::new).orElse(null);
+        } else {
+            throw new IllegalArgumentException("Invalid email or password");
+        }
     }
 }

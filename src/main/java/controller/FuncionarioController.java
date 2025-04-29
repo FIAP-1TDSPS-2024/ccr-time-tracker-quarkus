@@ -8,14 +8,10 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import model.bo.FuncionarioBO;
-;
+
 import model.entity.FuncionarioEntity;
 import model.entity.ResponseEntity;
 import model.vo.FuncionarioVO;
-import model.vo.UserCreateVO;
-import model.vo.UserResponseVO;
-import model.vo.UserUpdateVO;
-
 import java.util.List;
 
 @Path("/funcionarios")
@@ -82,4 +78,22 @@ public class FuncionarioController {
             return re.InternalServerError();
         }
     }
+
+    public Response login(String email, String senha) {
+        try {
+            FuncionarioVO funcionario = funcionarioBO.login(email, senha);
+            if (funcionario != null) {
+                return re.OK(funcionario);
+            } else {
+                return re.Unauthorized();
+            }
+        } catch (IllegalArgumentException e) {
+            return re.BadRequest(e.getMessage());
+        } catch (Exception e) {
+            System.out.println("Erro no login: " + e.getMessage());
+
+            return re.InternalServerError();
+        }
+    }
+
 }

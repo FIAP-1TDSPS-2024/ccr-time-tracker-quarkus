@@ -13,7 +13,8 @@ public class FuncionarioEntity {
     private int permissao;
     private ArrayList<ItemEntity> itens = new ArrayList<ItemEntity>();
 
-    public FuncionarioEntity(Long id_funcionario, String nome, String cpf, String email, String senha, String cargo, int permissao) {
+    public FuncionarioEntity(Long id_funcionario, String nome, String cpf, String email, String senha, String cargo,
+            int permissao) {
         this.id_funcionario = id_funcionario;
         this.nome = nome;
         this.cpf = cpf;
@@ -79,4 +80,8 @@ public class FuncionarioEntity {
         this.itens = itens;
     }
 
+    public String toString() {
+        return "FuncionarioEntity [id_funcionario=" + id_funcionario + ", nome=" + nome + ", cpf=" + cpf + ", email="
+                + email + ", senha=" + senha + ", cargo=" + cargo + ", permissao=" + permissao + "]";
+    }
 }

@@ -4,7 +4,6 @@ import config.DatabaseConfig;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import model.entity.FuncionarioEntity;
-import model.entity.UserEntity;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -25,8 +24,8 @@ public class FuncionarioDAO {
         String sql = "SELECT id_funcionario, nome, cpf, cargo, email, senha, acesso FROM funcionario";
 
         try (Connection conn = databaseConfig.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql);
-             ResultSet rs = stmt.executeQuery()) {
+                PreparedStatement stmt = conn.prepareStatement(sql);
+                ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
                 funcionarios.add(new FuncionarioEntity(
@@ -42,24 +41,50 @@ public class FuncionarioDAO {
         return funcionarios;
     }
 
-    public Optional<FuncionarioEntity> findById(Long id) throws SQLException {
-        String sql = "SELECT id_funcionario, nome, cpf, cargo, email, senha, acesso FROM funcionario WHERE id = ?";
+    public Optional<FuncionarioEntity> findByEmail(String email) throws SQLException {
+        String sql = "SELECT id_funcionario, nome, cpf, cargo, email, senha, acesso FROM funcionario WHERE email = ?";
 
         try (Connection conn = databaseConfig.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+                PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, email);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    FuncionarioEntity funcionario = new FuncionarioEntity(
+                            rs.getLong("id_funcionario"),
+                            rs.getString("nome"),
+                            rs.getString("cpf"),
+                            rs.getString("email"),
+                            rs.getString("senha"),
+                            rs.getString("cargo"),
+                            rs.getInt("acesso"));
+                    return Optional.of(funcionario);
+                }
+            }
+        }
+        return Optional.empty();
+    }
+
+    public Optional<FuncionarioEntity> findById(Long id) throws SQLException {
+        String sql = "SELECT id_funcionario, nome, cpf, cargo, email, senha, acesso FROM funcionario WHERE id_funcionario = ?";
+
+        try (Connection conn = databaseConfig.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setLong(1, id);
 
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
-                    return Optional.of(new FuncionarioEntity(
+                    FuncionarioEntity funcionario = new FuncionarioEntity(
                             rs.getLong("id_funcionario"),
                             rs.getString("nome"),
                             rs.getString("cpf"),
-                            rs.getString("cargo"),
                             rs.getString("email"),
                             rs.getString("senha"),
-                            rs.getInt("acesso")));
+                            rs.getString("cargo"),
+                            rs.getInt("acesso"));
+                    return Optional.of(funcionario);
                 }
             }
         }
@@ -70,7 +95,7 @@ public class FuncionarioDAO {
         String sql = "INSERT INTO funcionario (nome, cpf, cargo, email, senha, acesso) VALUES (?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = databaseConfig.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql, new String[] { "id_funcionario" })) {
+                PreparedStatement stmt = conn.prepareStatement(sql, new String[] { "id_funcionario" })) {
 
             stmt.setString(1, funcionario.getNome());
             stmt.setString(2, funcionario.getCpf());
@@ -79,13 +104,12 @@ public class FuncionarioDAO {
             stmt.setString(5, funcionario.getSenha());
             stmt.setInt(6, funcionario.getPermissao());
 
-            stmt.executeUpdate();
+            stmt.execute();
 
             try (ResultSet rs = stmt.getGeneratedKeys()) {
                 if (rs.next()) {
                     funcionario.setId_funcionario(rs.getLong(1));
                 }
-
                 return funcionario;
             }
         }
@@ -95,7 +119,7 @@ public class FuncionarioDAO {
         String sql = "UPDATE funcionarios SET nome = ?, cpf = ?, cargo = ?, email = ?, senha = ?, acesso = ? WHERE id_funcionario = ?";
 
         try (Connection conn = databaseConfig.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+                PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, funcionario.getNome());
             stmt.setString(2, funcionario.getCpf());
@@ -113,7 +137,7 @@ public class FuncionarioDAO {
         String sql = "DELETE FROM funcionario WHERE id_funcionario = ?";
 
         try (Connection conn = databaseConfig.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+                PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setLong(1, id);
             return stmt.executeUpdate() > 0;

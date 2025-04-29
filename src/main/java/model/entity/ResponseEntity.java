@@ -84,4 +84,8 @@ public class ResponseEntity {
                 .entity(new ResponseEntity(message, "0002", "bad_request")).build();
     }
 
+    public Response Unauthorized() {
+        return Response.status(Response.Status.UNAUTHORIZED)
+                .entity(new ResponseEntity("Unauthorized", "0003", "unauthorized")).build();
+    }
 }
