@@ -6,6 +6,7 @@ import model.entity.ItemEntity;
 import java.util.ArrayList;
 
 public class FuncionarioVO {
+    private int id_funcionario;
     private String nome;
     private String cpf;
     private String email;
@@ -14,6 +15,7 @@ public class FuncionarioVO {
     private ArrayList<ItemEntity> itens = new ArrayList<ItemEntity>();
 
     public FuncionarioVO(FuncionarioEntity entity) {
+        this.id_funcionario = entity.getId_funcionario().intValue();
         this.nome = entity.getNome();
         this.cpf = entity.getCpf();
         this.email = entity.getEmail();
@@ -30,6 +32,10 @@ public class FuncionarioVO {
 
     public void setNome(String nome) {
         this.nome = nome;
+    }
+
+    public int getId_funcionario() {
+        return id_funcionario;
     }
 
     public String getCpf() {
