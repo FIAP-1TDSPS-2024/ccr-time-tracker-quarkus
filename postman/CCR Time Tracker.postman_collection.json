@@ -1,0 +1,214 @@
+{
+	"info": {
+		"_postman_id": "45c6616e-f3fc-4b98-927c-de25a6c26791",
+		"name": "CCR Time Tracker",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "12684952"
+	},
+	"item": [
+		{
+			"name": "Item",
+			"item": [
+				{
+					"name": "List item by funcionario_id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/itens/funcionario/:id_funcionario",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"itens",
+								"funcionario",
+								":id_funcionario"
+							],
+							"variable": [
+								{
+									"key": "id_funcionario",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nome\": \"Tempo médio de percurso\",\n    \"abreviacao\": \"TMP\",\n    \"url\": \"/tmp\",\n    \"favorito\": true,\n    \"id_funcionario\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/itens",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"itens"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Deletar",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/itens/:id_item",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"itens",
+								":id_item"
+							],
+							"variable": [
+								{
+									"key": "id_item",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Favoritar",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/itens/:id_item/favoritar",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"itens",
+								":id_item",
+								"favoritar"
+							],
+							"variable": [
+								{
+									"key": "id_item",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Funcionario",
+			"item": [
+				{
+					"name": "Create funcionario",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nome\": \"Wendell\",\n    \"cpf\": \"23088384856\",\n    \"email\": \"rm559336@fiap.com.br\",\n    \"senha\": \"12345678\",\n    \"cargo\": \"Funcionario\",\n    \"permissao\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/funcionarios",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"funcionarios"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get funcionario",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/funcionarios/:id_funcionario",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"funcionarios",
+								":id_funcionario"
+							],
+							"variable": [
+								{
+									"key": "id_funcionario",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get funcionarios",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/funcionarios",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"funcionarios"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"rm559336@fiap.com.br\",\n    \"senha\": \"12345678\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/funcionarios/login",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"funcionarios",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
