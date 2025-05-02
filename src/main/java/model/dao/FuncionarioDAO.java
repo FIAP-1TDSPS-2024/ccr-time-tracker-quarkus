@@ -32,9 +32,9 @@ public class FuncionarioDAO {
                         rs.getLong("id_funcionario"),
                         rs.getString("nome"),
                         rs.getString("cpf"),
-                        rs.getString("cargo"),
                         rs.getString("email"),
                         rs.getString("senha"),
+                        rs.getString("cargo"),
                         rs.getInt("acesso")));
             }
         }
