@@ -1,20 +1,30 @@
-package model.entity;
+package model.vo;
 
-public class ItemEntity {
+import model.entity.ItemEntity;
+
+public class ItemVO {
     private int id_item;
     private String nome;
     private String abreviacao;
     private String url;
     private boolean favorito;
-    private int id_funcionario;
 
-    public ItemEntity(int id_item, String nome, String abreviacao, String url, int id_funcionario, boolean favorito) {
+    public ItemVO(ItemEntity entity) {
+        this.nome = entity.getNome();
+        this.abreviacao = entity.getAbreviacao();
+        this.url = entity.getUrl();
+        this.favorito = entity.getFavorito();
+    }
+
+    public ItemVO() {
+    }
+
+    public ItemVO(int id_item, String nome, String abreviacao, String url) {
         this.id_item = id_item;
         this.nome = nome;
         this.abreviacao = abreviacao;
         this.url = url;
-        this.favorito = favorito;
-        this.id_funcionario = id_funcionario;
+        this.favorito = false;
     }
 
     public int getId_item() {
@@ -35,14 +45,6 @@ public class ItemEntity {
 
     public boolean getFavorito() {
         return favorito;
-    }
-
-    public int getId_funcionario() {
-        return id_funcionario;
-    }
-
-    public void setFavorito(boolean favorito) {
-        this.favorito = favorito;
     }
 
 }

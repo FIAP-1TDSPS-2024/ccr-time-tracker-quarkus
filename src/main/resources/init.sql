@@ -10,7 +10,7 @@ CREATE TABLE funcionario(
 );
 
 CREATE TABLE item(
-    id_item number(10) CONSTRAINT pk_id_item PRIMARY KEY,
+    id_item number(10) GENERATED ALWAYS AS IDENTITY CONSTRAINT pk_id_item PRIMARY KEY,
     nome varchar(50) CONSTRAINT item_nome_nn NOT NULL,
     abreviacao varchar(10) CONSTRAINT item_abreviacao_nn NOT NULL,
     url varchar(100) CONSTRAINT item_url_nn NOT NULL,
