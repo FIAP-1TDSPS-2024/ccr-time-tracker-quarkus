@@ -14,5 +14,6 @@ CREATE TABLE item(
     nome varchar(50) CONSTRAINT item_nome_nn NOT NULL,
     abreviacao varchar(10) CONSTRAINT item_abreviacao_nn NOT NULL,
     url varchar(100) CONSTRAINT item_url_nn NOT NULL,
+    favorito number(1) CONSTRAINT item_favorito_nn NOT NULL,
     id_funcionario number(10) CONSTRAINT fk_id_funcionario REFERENCES funcionario(id_funcionario)
 );
